@@ -1,9 +1,10 @@
 use rust_decimal::{Decimal, dec};
 use serde::Deserialize;
 
-use crate::{mean::mean, variance::variance};
+use crate::{mean::mean, std_dev::std_dev, variance::variance};
 
 mod mean;
+mod std_dev;
 mod variance;
 
 #[derive(Debug, Deserialize)]
@@ -32,6 +33,7 @@ fn quantifying_volatility_ch_1_3() {
     let change_mean = mean(&percentage_change);
     println!("mean: {}", change_mean);
     println!("variance: {}", variance(&percentage_change));
+    println!("std dev: {}", std_dev(&percentage_change));
 }
 
 fn main() {
