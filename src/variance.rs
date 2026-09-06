@@ -8,5 +8,6 @@ pub fn variance(efx: &[Decimal]) -> Decimal {
     for x in efx {
         xminusmeansq += (x - mean).powd(dec!(2));
     }
-    xminusmeansq / Decimal::from(efx.len())
+    // Traditionally, it should be N, but N - 1 was used(Bessel's correction)
+    xminusmeansq / Decimal::from(efx.len() - 1)
 }
