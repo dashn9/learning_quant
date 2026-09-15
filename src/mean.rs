@@ -4,10 +4,10 @@ pub fn mean(efx: &[Decimal]) -> Decimal {
     efx.iter().sum::<Decimal>() / Decimal::from(efx.len())
 }
 
-pub fn trimmed_mean(efx: &[Decimal], trim: u8) -> Decimal {
+pub fn trimmed_mean(efx: &[Decimal], trim: usize) -> Decimal {
     let mut s = efx.to_vec();
     s.sort();
     // floored by default
-    let k = s.len() * 5 / 100;
+    let k = s.len() * trim / 100;
     mean(&s[k..s.len() - k])
 }
