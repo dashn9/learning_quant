@@ -162,6 +162,69 @@ fn print_sample_block(
     }
 }
 
+/// For Y = aX + b:  E[Y] = a * E[X] + b,  and  Var(Y) = a^2 * Var(X).
+/// The shift b lands on the mean but cancels out of every deviation, so variance ignores it.
+fn leverage_portfolio_management() {
+    // Decimal fractions, not percent: 0.0228 is a 2.28% day.
+    let unleveraged_returns = [
+        dec!(0.0228),
+        dec!(0.0212),
+        dec!(0.0233),
+        dec!(0.0579),
+        dec!(0.0122),
+        dec!(0.0189),
+    ];
+    let leverage_multiplier = dec!(2.5);
+    let fixed_return_offset = dec!(0.01);
+
+    let scaled_and_shifted_returns: Vec<Decimal> = unleveraged_returns
+        .iter()
+        .copied()
+        .map(|daily_return| daily_return * leverage_multiplier + fixed_return_offset)
+        .collect();
+    let scaled_returns: Vec<Decimal> = unleveraged_returns
+        .iter()
+        .copied()
+        .map(|daily_return| daily_return * leverage_multiplier)
+        .collect();
+    let shifted_returns: Vec<Decimal> = unleveraged_returns
+        .iter()
+        .copied()
+        .map(|daily_return| daily_return + fixed_return_offset)
+        .collect();
+
+    report_leverage_effect("X                 (unleveraged)", &unleveraged_returns);
+    report_leverage_effect("X + 0.01          (shift only)", &shifted_returns);
+    report_leverage_effect("2.5X              (scale only)", &scaled_returns);
+    report_leverage_effect("Y = 2.5X + 0.01   (both)", &scaled_and_shifted_returns);
+
+    let baseline_variance = variance(&unleveraged_returns);
+    println!(
+        "\nvariance ratio  Y / X            {:.6}   predicted a^2 = {}",
+        variance(&scaled_and_shifted_returns) / baseline_variance,
+        leverage_multiplier * leverage_multiplier
+    );
+    println!(
+        "variance ratio  shift-only / X   {:.6}   predicted 1, a shift changes no distance",
+        variance(&shifted_returns) / baseline_variance
+    );
+}
+
+/// Prints a series beside its mean and variance so the four variants compare row by row.
+fn report_leverage_effect(label: &str, series: &[Decimal]) {
+    print!("\n{:<34}", label);
+    for value in series {
+        print!("{:>10.4}", value);
+    }
+    println!();
+    println!(
+        "  mean {:>12.6}   variance {:>14.8}   std dev {:>10.6}",
+        mean(series),
+        variance(series),
+        std_dev(series)
+    );
+}
+
 fn main() {
-    quantifying_fat_tails_crypto_vs_treasury();
+    leverage_portfolio_management();
 }
