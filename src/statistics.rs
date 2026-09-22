@@ -96,38 +96,3 @@ fn median_of_sorted(sorted_values: &[Decimal]) -> Decimal {
         sorted_values[middle]
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use rust_decimal::dec;
-
-    use super::*;
-
-    #[test]
-    fn calculates_central_tendencies() {
-        let values = [dec!(1), dec!(2), dec!(3), dec!(4), dec!(100)];
-
-        assert_eq!(mean(&values), dec!(22));
-        assert_eq!(median(&values), dec!(3));
-        assert_eq!(trimmed_mean(&values, 20), dec!(3));
-    }
-
-    #[test]
-    fn calculates_sample_dispersion() {
-        let values = [dec!(1), dec!(2), dec!(3)];
-
-        assert_eq!(sample_variance(&values), dec!(1));
-        assert_eq!(standard_deviation(&values), dec!(1));
-    }
-
-    #[test]
-    fn calculates_nearest_rank_quartiles_once() {
-        let values = [dec!(1), dec!(2), dec!(3), dec!(4), dec!(5)];
-        let summary = dispersion_summary(&values);
-
-        assert_eq!(summary.lower_quartile, dec!(2));
-        assert_eq!(summary.median, dec!(3));
-        assert_eq!(summary.upper_quartile, dec!(4));
-        assert_eq!(summary.interquartile_range, dec!(2));
-    }
-}

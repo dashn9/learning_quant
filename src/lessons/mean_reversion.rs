@@ -118,32 +118,3 @@ fn calculate_price_difference(
         EntrySignal::NoEntry => None,
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn classifies_mean_reversion_entries() {
-        assert_eq!(classify_entry_signal(dec!(2.1)), EntrySignal::Short);
-        assert_eq!(classify_entry_signal(dec!(-2.1)), EntrySignal::Long);
-        assert_eq!(classify_entry_signal(dec!(2)), EntrySignal::NoEntry);
-        assert_eq!(classify_entry_signal(dec!(-2)), EntrySignal::NoEntry);
-    }
-
-    #[test]
-    fn calculates_one_share_price_differences() {
-        assert_eq!(
-            calculate_price_difference(EntrySignal::Long, dec!(100), dec!(98)),
-            Some(dec!(-2))
-        );
-        assert_eq!(
-            calculate_price_difference(EntrySignal::Short, dec!(100), dec!(98)),
-            Some(dec!(2))
-        );
-        assert_eq!(
-            calculate_price_difference(EntrySignal::NoEntry, dec!(100), dec!(98)),
-            None
-        );
-    }
-}

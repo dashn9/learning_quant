@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+chrono = { version = "0.4", default-features = false, features = ["std"] }
 csv = "1.4.0"
 rust_decimal = { version = "1.43.0", features = ["macros", "maths"] }
 serde = { version = "1.0.229", features = ["derive"] }
