@@ -4,6 +4,7 @@ mod downside_tail_risk;
 mod fat_tails;
 mod leverage;
 mod mean_reversion;
+mod order_flow_conditional_momentum;
 mod robust_averages;
 mod volatility;
 
@@ -17,8 +18,9 @@ pub fn run(lesson_name: &str) -> LessonResult {
         "fat-tails" => fat_tails::run(),
         "leverage" => leverage::run(),
         "mean-reversion" => mean_reversion::run(),
+        "order-flow-conditional-momentum" => order_flow_conditional_momentum::run(),
         _ => Err(format!(
-            "unknown lesson '{lesson_name}'. Choose: volatility, robust-averages, fat-tails, leverage, mean-reversion, or downside-tail-risk"
+            "unknown lesson '{lesson_name}'. Choose: volatility, robust-averages, fat-tails, leverage, mean-reversion, order-flow-conditional-momentum, or downside-tail-risk"
         )
         .into()),
     }
