@@ -1,5 +1,6 @@
 use std::error::Error;
 
+mod combined_payoffs;
 mod downside_tail_risk;
 mod fat_tails;
 mod leverage;
@@ -12,6 +13,7 @@ pub type LessonResult = Result<(), Box<dyn Error>>;
 
 pub fn run(lesson_name: &str) -> LessonResult {
     match lesson_name {
+        "combined-payoffs" => combined_payoffs::run(),
         "downside-tail-risk" => downside_tail_risk::run(),
         "volatility" => volatility::run(),
         "robust-averages" => robust_averages::run(),
@@ -20,7 +22,7 @@ pub fn run(lesson_name: &str) -> LessonResult {
         "mean-reversion" => mean_reversion::run(),
         "order-flow-conditional-momentum" => order_flow_conditional_momentum::run(),
         _ => Err(format!(
-            "unknown lesson '{lesson_name}'. Choose: volatility, robust-averages, fat-tails, leverage, mean-reversion, order-flow-conditional-momentum, or downside-tail-risk"
+            "unknown lesson '{lesson_name}'. Choose: combined-payoffs, volatility, robust-averages, fat-tails, leverage, mean-reversion, order-flow-conditional-momentum, or downside-tail-risk"
         )
         .into()),
     }
